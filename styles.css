@@ -220,6 +220,16 @@ h3 {
   backdrop-filter: blur(12px);
 }
 
+.btn.whatsapp {
+  color: #07110d;
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.btn.dark {
+  border-color: transparent;
+}
+
 .signal-panel {
   align-self: end;
   margin-bottom: 20px;
@@ -504,11 +514,147 @@ pre {
   font-weight: 800;
 }
 
+.query-section,
 .contact-section {
   display: grid;
   grid-template-columns: minmax(300px, 1fr) minmax(300px, 520px);
   gap: clamp(28px, 6vw, 84px);
   align-items: center;
+}
+
+.query-section {
+  padding: clamp(70px, 9vw, 120px) clamp(18px, 5vw, 72px);
+  background: #edf7f2;
+}
+
+.query-copy p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.query-layout {
+  display: grid;
+  gap: 16px;
+}
+
+.query-form,
+.database-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: 0 10px 30px rgba(16, 20, 24, 0.05);
+}
+
+.query-form {
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+}
+
+.query-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.query-form label span,
+.db-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.query-form input,
+.query-form select,
+.query-form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  color: var(--ink);
+  background: var(--paper);
+  font: inherit;
+}
+
+.query-form textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-actions .btn {
+  width: 100%;
+  cursor: pointer;
+}
+
+.form-status {
+  min-height: 24px;
+  margin: 0;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.database-card {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+}
+
+.database-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 22px;
+}
+
+.database-card ul {
+  display: grid;
+  gap: 10px;
+  max-height: 220px;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.database-card li {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.database-card li strong,
+.database-card li span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.database-card li span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.export-btn {
+  min-height: 46px;
+  border: 0;
+  border-radius: var(--radius);
+  color: var(--white);
+  background: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.contact-section {
+  padding: clamp(70px, 9vw, 120px) clamp(18px, 5vw, 72px);
   background: var(--white);
 }
 
@@ -570,6 +716,7 @@ pre {
 @media (max-width: 940px) {
   .hero,
   .showcase,
+  .query-section,
   .contact-section {
     grid-template-columns: 1fr;
   }
@@ -644,6 +791,10 @@ pre {
 
   .service-card {
     min-height: auto;
+  }
+
+  .form-actions {
+    grid-template-columns: 1fr;
   }
 
   .site-footer {
