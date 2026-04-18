@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="TradeMind AI builds AI-powered algo trading software, strategy automation, trading dashboards, TradingView scripts, and broker API integrations."
+    />
+    <title>TradeMind AI | AI Algo Trading Software</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" data-header>
+      <a class="brand" href="#home" aria-label="TradeMind AI home">
+        <span class="brand-mark">TM</span>
+        <span>TradeMind AI</span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="site-nav" data-nav>
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <canvas id="marketCanvas" aria-hidden="true"></canvas>
+        <div class="hero-shade"></div>
+
+        <div class="hero-content">
+          <p class="eyebrow">AI, ML and algo trading technology</p>
+          <h1>Convert Your Trading Strategy Into an Intelligent Algo</h1>
+          <p class="hero-copy">
+            TradeMind AI designs custom trading software, broker-connected algo systems,
+            TradingView scripts, AI/ML market tools, and dashboards for traders and finance businesses.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="mailto:jadhavdnyaneshwar701@gmail.com?subject=TradeMind%20AI%20Consultation">
+              Book Consultation
+            </a>
+            <a class="btn secondary" href="#services">Explore Services</a>
+          </div>
+        </div>
+
+        <aside class="signal-panel" aria-label="Live capability snapshot">
+          <div class="panel-top">
+            <span>Strategy Engine</span>
+            <strong>AI Ready</strong>
+          </div>
+          <div class="metric-row">
+            <span>Backtesting</span>
+            <b>Python</b>
+          </div>
+          <div class="metric-row">
+            <span>Execution</span>
+            <b>Broker API</b>
+          </div>
+          <div class="metric-row">
+            <span>Signals</span>
+            <b>TradingView</b>
+          </div>
+          <div class="mini-chart" aria-hidden="true">
+            <span style="height: 38%"></span>
+            <span style="height: 58%"></span>
+            <span style="height: 46%"></span>
+            <span style="height: 72%"></span>
+            <span style="height: 64%"></span>
+            <span style="height: 86%"></span>
+            <span style="height: 78%"></span>
+          </div>
+        </aside>
+      </section>
+
+      <section class="intro-band" aria-label="Company highlights">
+        <div>
+          <strong>Strategy to Algo</strong>
+          <span>Rules, alerts, execution, and risk logic.</span>
+        </div>
+        <div>
+          <strong>AI/ML Systems</strong>
+          <span>Research workflows and intelligent market tools.</span>
+        </div>
+        <div>
+          <strong>Trading Software</strong>
+          <span>Dashboards, APIs, reports, and automation.</span>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="section-heading">
+          <p class="eyebrow">Services</p>
+          <h2>Build the trading system your strategy deserves.</h2>
+          <p>
+            From a simple indicator to a complete broker-connected algo stack, TradeMind AI turns trading ideas
+            into structured, testable, and usable software.
+          </p>
+        </div>
+
+        <div class="service-grid">
+          <article class="service-card">
+            <span class="icon">01</span>
+            <h3>Strategy to Algo Conversion</h3>
+            <p>Convert manual entry, exit, stop-loss, target, and risk rules into clear automated logic.</p>
+          </article>
+          <article class="service-card">
+            <span class="icon">02</span>
+            <h3>Custom Algo Bot Development</h3>
+            <p>Build execution-ready systems with alerts, trade logs, position sizing, and safeguards.</p>
+          </article>
+          <article class="service-card">
+            <span class="icon">03</span>
+            <h3>AI/ML Trading Models</h3>
+            <p>Create research tools for signal scoring, pattern analysis, model testing, and decision support.</p>
+          </article>
+          <article class="service-card">
+            <span class="icon">04</span>
+            <h3>TradingView Pine Script</h3>
+            <p>Develop custom indicators, scanners, strategies, alerts, and automation-ready scripts.</p>
+          </article>
+          <article class="service-card">
+            <span class="icon">05</span>
+            <h3>Broker API Integration</h3>
+            <p>Connect trading logic with broker APIs for order placement, monitoring, and portfolio workflows.</p>
+          </article>
+          <article class="service-card">
+            <span class="icon">06</span>
+            <h3>Trading Dashboards</h3>
+            <p>Design fast dashboards for signals, analytics, trades, clients, performance, and risk controls.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="showcase">
+        <div class="terminal-window">
+          <div class="window-bar">
+            <span></span><span></span><span></span>
+          </div>
+          <pre><code>strategy = TradeMindAI()
+strategy.add_signal("EMA crossover")
+strategy.add_risk(max_loss="1%")
+strategy.backtest(symbol="NIFTY")
+strategy.deploy(mode="alerts")</code></pre>
+        </div>
+        <div class="showcase-copy">
+          <p class="eyebrow">What makes it practical</p>
+          <h2>Software first. Trading risk handled clearly.</h2>
+          <p>
+            Every build focuses on usable logic, clean reporting, risk controls, and transparent assumptions.
+            The goal is not hype. The goal is better trading infrastructure.
+          </p>
+          <ul class="check-list">
+            <li>Readable strategy rules before development starts</li>
+            <li>Backtesting and optimization with clear metrics</li>
+            <li>Risk management built into the execution workflow</li>
+            <li>Maintenance support after launch</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section process-section" id="process">
+        <div class="section-heading">
+          <p class="eyebrow">Process</p>
+          <h2>From idea to working trading software.</h2>
+        </div>
+        <div class="timeline">
+          <div>
+            <span>1</span>
+            <h3>Share Strategy</h3>
+            <p>Send your rules, timeframe, instruments, indicators, and trading conditions.</p>
+          </div>
+          <div>
+            <span>2</span>
+            <h3>Define Logic</h3>
+            <p>We convert the strategy into structured conditions and development scope.</p>
+          </div>
+          <div>
+            <span>3</span>
+            <h3>Build and Test</h3>
+            <p>The algo, script, dashboard, or API integration is developed and tested.</p>
+          </div>
+          <div>
+            <span>4</span>
+            <h3>Deploy and Improve</h3>
+            <p>Launch the tool, monitor behavior, and improve it with real feedback.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section pricing-section" id="pricing">
+        <div class="section-heading">
+          <p class="eyebrow">Starting Packages</p>
+          <h2>Flexible pricing for different trading builds.</h2>
+          <p>Final pricing depends on complexity, broker APIs, data needs, and support requirements.</p>
+        </div>
+        <div class="pricing-grid">
+          <article class="price-card">
+            <h3>Script Starter</h3>
+            <p>TradingView indicators, alerts, and simple strategy scripts.</p>
+            <strong>From ₹5,000</strong>
+            <a href="mailto:jadhavdnyaneshwar701@gmail.com?subject=Script%20Starter%20Inquiry">Start Script</a>
+          </article>
+          <article class="price-card featured">
+            <h3>Algo Build</h3>
+            <p>Strategy automation, backtesting, risk rules, and broker-ready logic.</p>
+            <strong>From ₹25,000</strong>
+            <a href="mailto:jadhavdnyaneshwar701@gmail.com?subject=Algo%20Build%20Inquiry">Build Algo</a>
+          </article>
+          <article class="price-card">
+            <h3>Software Suite</h3>
+            <p>Custom dashboards, admin panels, integrations, and client workflows.</p>
+            <strong>Custom</strong>
+            <a href="mailto:jadhavdnyaneshwar701@gmail.com?subject=Software%20Suite%20Inquiry">Discuss Project</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contact">
+        <div class="contact-copy">
+          <p class="eyebrow">Contact</p>
+          <h2>Ready to turn your strategy into software?</h2>
+          <p>
+            Share your strategy rules, target platform, and broker requirement. TradeMind AI will help you
+            shape it into a practical development plan.
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <a href="tel:880616076">
+            <span>Call</span>
+            <strong>880616076</strong>
+          </a>
+          <a href="mailto:jadhavdnyaneshwar701@gmail.com">
+            <span>Email</span>
+            <strong>jadhavdnyaneshwar701@gmail.com</strong>
+          </a>
+          <a href="https://github.com/danny8806" target="_blank" rel="noreferrer">
+            <span>GitHub</span>
+            <strong>github.com/danny8806</strong>
+          </a>
+        </div>
+      </section>
+
+      <section class="disclaimer">
+        TradeMind AI provides software development, automation, and technology services. We do not guarantee
+        profits or provide investment advice. Trading involves market risk.
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>© <span data-year></span> TradeMind AI. All rights reserved.</span>
+      <a href="#home">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
