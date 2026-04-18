@@ -33,6 +33,7 @@
         <a href="#services">Services</a>
         <a href="#process">Process</a>
         <a href="#pricing">Pricing</a>
+        <a href="#query">Query</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
@@ -52,6 +53,9 @@
           <div class="hero-actions">
             <a class="btn primary" href="mailto:jadhavdnyaneshwar701@gmail.com?subject=TradeMind%20AI%20Consultation">
               Book Consultation
+            </a>
+            <a class="btn whatsapp" href="https://wa.me/91880616076?text=Hi%20TradeMind%20AI%2C%20I%20want%20to%20discuss%20algo%20trading%20software." target="_blank" rel="noreferrer">
+              WhatsApp
             </a>
             <a class="btn secondary" href="#services">Explore Services</a>
           </div>
@@ -229,6 +233,66 @@ strategy.deploy(mode="alerts")</code></pre>
         </div>
       </section>
 
+      <section class="query-section" id="query">
+        <div class="query-copy">
+          <p class="eyebrow">Project Query</p>
+          <h2>Send your trading software requirement.</h2>
+          <p>
+            Add your strategy type, preferred platform, broker, and message. The query can be sent by email
+            or WhatsApp and is also saved in the local query database on this device.
+          </p>
+        </div>
+
+        <div class="query-layout">
+          <form class="query-form" data-query-form>
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" placeholder="Your name" required />
+            </label>
+            <label>
+              <span>Phone or WhatsApp</span>
+              <input type="tel" name="phone" placeholder="Your mobile number" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" placeholder="your@email.com" />
+            </label>
+            <label>
+              <span>Service Needed</span>
+              <select name="service" required>
+                <option value="">Select service</option>
+                <option>Strategy to Algo Conversion</option>
+                <option>Algo Bot Development</option>
+                <option>TradingView Pine Script</option>
+                <option>Broker API Integration</option>
+                <option>AI/ML Trading Model</option>
+                <option>Trading Dashboard</option>
+              </select>
+            </label>
+            <label>
+              <span>Message</span>
+              <textarea name="message" rows="5" placeholder="Explain your strategy, broker, timeframe, and requirement." required></textarea>
+            </label>
+            <div class="form-actions">
+              <button class="btn primary dark" type="submit">Send Query</button>
+              <a class="btn whatsapp dark" href="https://wa.me/91880616076" target="_blank" rel="noreferrer" data-whatsapp-query>
+                Send on WhatsApp
+              </a>
+            </div>
+            <p class="form-status" data-form-status aria-live="polite"></p>
+          </form>
+
+          <aside class="database-card" aria-label="Local query database">
+            <div>
+              <span class="db-label">Local Query Database</span>
+              <strong data-query-count>0 saved queries</strong>
+            </div>
+            <ul data-query-list></ul>
+            <button type="button" class="export-btn" data-export-queries>Export CSV</button>
+          </aside>
+        </div>
+      </section>
+
       <section class="contact-section" id="contact">
         <div class="contact-copy">
           <p class="eyebrow">Contact</p>
@@ -243,6 +307,10 @@ strategy.deploy(mode="alerts")</code></pre>
           <a href="tel:880616076">
             <span>Call</span>
             <strong>880616076</strong>
+          </a>
+          <a href="https://wa.me/91880616076?text=Hi%20TradeMind%20AI%2C%20I%20want%20to%20discuss%20algo%20trading%20software." target="_blank" rel="noreferrer">
+            <span>WhatsApp</span>
+            <strong>Message TradeMind AI</strong>
           </a>
           <a href="mailto:jadhavdnyaneshwar701@gmail.com">
             <span>Email</span>
