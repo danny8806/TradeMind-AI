@@ -2,6 +2,15 @@ const header = document.querySelector("[data-header]");
 const nav = document.querySelector("[data-nav]");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const year = document.querySelector("[data-year]");
+const queryForm = document.querySelector("[data-query-form]");
+const queryCount = document.querySelector("[data-query-count]");
+const queryList = document.querySelector("[data-query-list]");
+const formStatus = document.querySelector("[data-form-status]");
+const whatsappQuery = document.querySelector("[data-whatsapp-query]");
+const exportQueries = document.querySelector("[data-export-queries]");
+const queryStorageKey = "trademind-ai-queries";
+const ownerEmail = "jadhavdnyaneshwar701@gmail.com";
+const whatsappNumber = "91880616076";
 
 year.textContent = new Date().getFullYear();
 
@@ -25,6 +34,101 @@ nav.addEventListener("click", (event) => {
     menuToggle.setAttribute("aria-expanded", "false");
   }
 });
+
+const getQueries = () => JSON.parse(localStorage.getItem(queryStorageKey) || "[]");
+
+const setQueries = (queries) => {
+  localStorage.setItem(queryStorageKey, JSON.stringify(queries));
+};
+
+const getQueryPayload = () => {
+  const formData = new FormData(queryForm);
+  return {
+    name: String(formData.get("name") || "").trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    email: String(formData.get("email") || "").trim(),
+    service: String(formData.get("service") || "").trim(),
+    message: String(formData.get("message") || "").trim(),
+    createdAt: new Date().toLocaleString(),
+  };
+};
+
+const createMessage = (query) =>
+  [
+    "TradeMind AI Project Query",
+    `Name: ${query.name}`,
+    `Phone: ${query.phone}`,
+    `Email: ${query.email || "Not provided"}`,
+    `Service: ${query.service}`,
+    `Message: ${query.message}`,
+  ].join("\n");
+
+const updateQueryDatabase = () => {
+  const queries = getQueries();
+  queryCount.textContent = `${queries.length} saved ${queries.length === 1 ? "query" : "queries"}`;
+  queryList.innerHTML = "";
+
+  queries.slice(0, 5).forEach((query) => {
+    const item = document.createElement("li");
+    const title = document.createElement("strong");
+    const detail = document.createElement("span");
+
+    title.textContent = `${query.name} - ${query.service}`;
+    detail.textContent = `${query.phone} | ${query.createdAt}`;
+    item.append(title, detail);
+    queryList.append(item);
+  });
+
+  if (queries.length === 0) {
+    const item = document.createElement("li");
+    const detail = document.createElement("span");
+    detail.textContent = "No saved queries yet.";
+    item.append(detail);
+    queryList.append(item);
+  }
+};
+
+const updateWhatsappLink = () => {
+  const query = getQueryPayload();
+  const message = createMessage(query);
+  whatsappQuery.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+};
+
+queryForm.addEventListener("input", updateWhatsappLink);
+
+queryForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const query = getQueryPayload();
+  const queries = [query, ...getQueries()].slice(0, 50);
+  const subject = encodeURIComponent(`TradeMind AI Query - ${query.service}`);
+  const body = encodeURIComponent(createMessage(query));
+
+  setQueries(queries);
+  updateQueryDatabase();
+  updateWhatsappLink();
+  formStatus.textContent = "Query saved. Opening email now.";
+  window.location.href = `mailto:${ownerEmail}?subject=${subject}&body=${body}`;
+});
+
+exportQueries.addEventListener("click", () => {
+  const queries = getQueries();
+  const columns = ["createdAt", "name", "phone", "email", "service", "message"];
+  const rows = queries.map((query) =>
+    columns.map((column) => `"${String(query[column] || "").replaceAll('"', '""')}"`).join(",")
+  );
+  const csv = [columns.join(","), ...rows].join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "trademind-ai-queries.csv";
+  link.click();
+  URL.revokeObjectURL(url);
+});
+
+updateQueryDatabase();
+updateWhatsappLink();
 
 const canvas = document.getElementById("marketCanvas");
 const ctx = canvas.getContext("2d");
