@@ -7,7 +7,7 @@
       name="description"
       content="TradeMind AI builds AI-powered algo trading software, strategy automation, trading dashboards, TradingView scripts, and broker API integrations."
     />
-    <title>TradeMind AI | AI Algo Trading Software</title>
+    <title>TradeMind AI | AI Algo Trading Software by Dnyaneshwar Jadhav</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,7 +17,15 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="site-header" data-header>
+    <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+    <canvas class="site-network" data-network aria-hidden="true"></canvas>
+
+    <div class="ticker" aria-label="Live market ticker" data-ticker>
+      <div class="ticker-track" data-ticker-track></div>
+    </div>
+
+    <header class="site-header glass" data-header>
       <a class="brand" href="#home" aria-label="TradeMind AI home">
         <span class="brand-mark">TM</span>
         <span>TradeMind AI</span>
@@ -33,8 +41,16 @@
         <a href="#services">Services</a>
         <a href="#process">Process</a>
         <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
         <a href="#query">Query</a>
         <a href="#contact">Contact</a>
+        <button class="cmdk-trigger" type="button" data-cmdk-open aria-label="Open command palette">
+          <span>Search</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" data-theme-toggle>
+          <span data-theme-icon>☾</span>
+        </button>
       </nav>
     </header>
 
@@ -42,43 +58,76 @@
       <section class="hero" id="home">
         <canvas id="marketCanvas" aria-hidden="true"></canvas>
         <div class="hero-shade"></div>
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-orb orb-a" aria-hidden="true"></div>
+        <div class="hero-orb orb-b" aria-hidden="true"></div>
 
         <div class="hero-content">
-          <p class="eyebrow">AI, ML and algo trading technology</p>
-          <h1>Convert Your Trading Strategy Into an Intelligent Algo</h1>
-          <p class="hero-copy">
-            TradeMind AI designs custom trading software, broker-connected algo systems,
-            TradingView scripts, AI/ML market tools, and dashboards for traders and finance businesses.
+          <p class="eyebrow">
+            <span class="status-dot" aria-hidden="true"></span>
+            AI · ML · Algo Trading Engine
+          </p>
+          <h1>
+            Convert Your Trading Strategy Into an
+            <span class="rotator" data-rotator>
+              <span>Intelligent Algo</span>
+              <span>Backtested System</span>
+              <span>Broker-Connected Bot</span>
+              <span>TradingView Script</span>
+            </span>
+          </h1>
+          <p class="hero-copy typewriter">
+            <span data-typewriter data-typewriter-lines='["TradeMind AI — founded by Dnyaneshwar Jadhav.","Custom algo bots. Broker APIs. TradingView scripts.","AI/ML research tools & trader dashboards, end-to-end."]'></span><span class="caret" aria-hidden="true">▍</span>
           </p>
           <div class="hero-actions">
             <a class="btn primary" href="mailto:jadhavdnyaneshwar701@gmail.com?subject=TradeMind%20AI%20Consultation">
               Book Consultation
             </a>
-            <a class="btn whatsapp" href="https://wa.me/91880616076?text=Hi%20TradeMind%20AI%2C%20I%20want%20to%20discuss%20algo%20trading%20software." target="_blank" rel="noreferrer">
+            <a class="btn whatsapp" href="https://wa.me/918806160767?text=Hi%20TradeMind%20AI%2C%20I%20want%20to%20discuss%20algo%20trading%20software." target="_blank" rel="noreferrer">
               WhatsApp
             </a>
             <a class="btn secondary" href="#services">Explore Services</a>
           </div>
+
+          <div class="hero-stats" data-stats>
+            <div>
+              <strong data-counter data-target="120" data-suffix="+">0</strong>
+              <span>Strategies Automated</span>
+              <svg class="sparkline" viewBox="0 0 100 28" aria-hidden="true" data-sparkline></svg>
+            </div>
+            <div>
+              <strong data-counter data-target="45" data-suffix="+">0</strong>
+              <span>Trading Dashboards</span>
+              <svg class="sparkline" viewBox="0 0 100 28" aria-hidden="true" data-sparkline></svg>
+            </div>
+            <div>
+              <strong data-counter data-target="99" data-suffix="%">0</strong>
+              <span>Clients Satisfied</span>
+              <svg class="sparkline" viewBox="0 0 100 28" aria-hidden="true" data-sparkline></svg>
+            </div>
+          </div>
         </div>
 
-        <aside class="signal-panel" aria-label="Live capability snapshot">
+        <aside class="signal-panel glass" aria-label="Live AI signal feed">
           <div class="panel-top">
-            <span>Strategy Engine</span>
-            <strong>AI Ready</strong>
+            <span><span class="pulse-dot" aria-hidden="true"></span>AI Signal Feed</span>
+            <strong>LIVE</strong>
+          </div>
+          <ul class="signal-feed" data-signal-feed aria-live="polite"></ul>
+          <div class="metric-row">
+            <span>Latency</span>
+            <b data-metric-latency>—</b>
           </div>
           <div class="metric-row">
-            <span>Backtesting</span>
-            <b>Python</b>
+            <span>Accuracy</span>
+            <b data-metric-accuracy>—</b>
           </div>
           <div class="metric-row">
-            <span>Execution</span>
-            <b>Broker API</b>
+            <span>Uptime</span>
+            <b>99.98%</b>
           </div>
-          <div class="metric-row">
-            <span>Signals</span>
-            <b>TradingView</b>
-          </div>
-          <div class="mini-chart" aria-hidden="true">
+          <div class="mini-chart" aria-hidden="true" data-mini-chart>
             <span style="height: 38%"></span>
             <span style="height: 58%"></span>
             <span style="height: 46%"></span>
@@ -90,7 +139,32 @@
         </aside>
       </section>
 
-      <section class="intro-band" aria-label="Company highlights">
+      <section class="marquee-tech" aria-label="Tech stack" data-reveal>
+        <div class="marquee-track" data-marquee>
+          <span>Python</span><span>·</span>
+          <span>FastAPI</span><span>·</span>
+          <span>TensorFlow</span><span>·</span>
+          <span>PyTorch</span><span>·</span>
+          <span>Pandas</span><span>·</span>
+          <span>NumPy</span><span>·</span>
+          <span>ChromaDB</span><span>·</span>
+          <span>WebSockets</span><span>·</span>
+          <span>TradingView</span><span>·</span>
+          <span>Zerodha Kite</span><span>·</span>
+          <span>Upstox</span><span>·</span>
+          <span>Angel One</span><span>·</span>
+          <span>IBKR</span><span>·</span>
+          <span>Alpaca</span><span>·</span>
+          <span>Docker</span><span>·</span>
+          <span>PostgreSQL</span><span>·</span>
+          <span>Redis</span><span>·</span>
+          <span>Next.js</span><span>·</span>
+          <span>React</span><span>·</span>
+          <span>LangChain</span>
+        </div>
+      </section>
+
+      <section class="intro-band" aria-label="Company highlights" data-reveal>
         <div>
           <strong>Strategy to Algo</strong>
           <span>Rules, alerts, execution, and risk logic.</span>
@@ -105,7 +179,23 @@
         </div>
       </section>
 
-      <section class="section" id="services">
+      <section class="founder-band" aria-label="Founder" data-reveal>
+        <div class="founder-avatar" aria-hidden="true">DJ</div>
+        <div class="founder-copy">
+          <p class="eyebrow">Founder</p>
+          <h2>Dnyaneshwar Jadhav</h2>
+          <p>
+            AI/ML engineer and algo trading software developer. Builds broker-ready trading systems,
+            TradingView scripts, AI research tools, and dashboards end-to-end.
+          </p>
+          <div class="founder-actions">
+            <a class="btn primary" href="tel:+918806160767">Call 8806160767</a>
+            <a class="btn whatsapp" href="https://wa.me/918806160767?text=Hi%20Dnyaneshwar%2C%20I%20want%20to%20discuss%20a%20trading%20software%20project." target="_blank" rel="noreferrer">WhatsApp</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services" data-reveal>
         <div class="section-heading">
           <p class="eyebrow">Services</p>
           <h2>Build the trading system your strategy deserves.</h2>
@@ -116,32 +206,32 @@
         </div>
 
         <div class="service-grid">
-          <article class="service-card">
+          <article class="service-card" data-tilt>
             <span class="icon">01</span>
             <h3>Strategy to Algo Conversion</h3>
             <p>Convert manual entry, exit, stop-loss, target, and risk rules into clear automated logic.</p>
           </article>
-          <article class="service-card">
+          <article class="service-card" data-tilt>
             <span class="icon">02</span>
             <h3>Custom Algo Bot Development</h3>
             <p>Build execution-ready systems with alerts, trade logs, position sizing, and safeguards.</p>
           </article>
-          <article class="service-card">
+          <article class="service-card" data-tilt>
             <span class="icon">03</span>
             <h3>AI/ML Trading Models</h3>
             <p>Create research tools for signal scoring, pattern analysis, model testing, and decision support.</p>
           </article>
-          <article class="service-card">
+          <article class="service-card" data-tilt>
             <span class="icon">04</span>
             <h3>TradingView Pine Script</h3>
             <p>Develop custom indicators, scanners, strategies, alerts, and automation-ready scripts.</p>
           </article>
-          <article class="service-card">
+          <article class="service-card" data-tilt>
             <span class="icon">05</span>
             <h3>Broker API Integration</h3>
             <p>Connect trading logic with broker APIs for order placement, monitoring, and portfolio workflows.</p>
           </article>
-          <article class="service-card">
+          <article class="service-card" data-tilt>
             <span class="icon">06</span>
             <h3>Trading Dashboards</h3>
             <p>Design fast dashboards for signals, analytics, trades, clients, performance, and risk controls.</p>
@@ -149,7 +239,7 @@
         </div>
       </section>
 
-      <section class="showcase">
+      <section class="showcase" data-reveal>
         <div class="terminal-window">
           <div class="window-bar">
             <span></span><span></span><span></span>
@@ -176,7 +266,7 @@ strategy.deploy(mode="alerts")</code></pre>
         </div>
       </section>
 
-      <section class="section process-section" id="process">
+      <section class="section process-section" id="process" data-reveal>
         <div class="section-heading">
           <p class="eyebrow">Process</p>
           <h2>From idea to working trading software.</h2>
@@ -205,26 +295,27 @@ strategy.deploy(mode="alerts")</code></pre>
         </div>
       </section>
 
-      <section class="section pricing-section" id="pricing">
+      <section class="section pricing-section" id="pricing" data-reveal>
         <div class="section-heading">
           <p class="eyebrow">Starting Packages</p>
           <h2>Flexible pricing for different trading builds.</h2>
           <p>Final pricing depends on complexity, broker APIs, data needs, and support requirements.</p>
         </div>
         <div class="pricing-grid">
-          <article class="price-card">
+          <article class="price-card" data-tilt>
             <h3>Script Starter</h3>
             <p>TradingView indicators, alerts, and simple strategy scripts.</p>
             <strong>From ₹5,000</strong>
             <a href="mailto:jadhavdnyaneshwar701@gmail.com?subject=Script%20Starter%20Inquiry">Start Script</a>
           </article>
-          <article class="price-card featured">
+          <article class="price-card featured" data-tilt>
+            <span class="badge">Most Popular</span>
             <h3>Algo Build</h3>
             <p>Strategy automation, backtesting, risk rules, and broker-ready logic.</p>
             <strong>From ₹25,000</strong>
             <a href="mailto:jadhavdnyaneshwar701@gmail.com?subject=Algo%20Build%20Inquiry">Build Algo</a>
           </article>
-          <article class="price-card">
+          <article class="price-card" data-tilt>
             <h3>Software Suite</h3>
             <p>Custom dashboards, admin panels, integrations, and client workflows.</p>
             <strong>Custom</strong>
@@ -233,7 +324,41 @@ strategy.deploy(mode="alerts")</code></pre>
         </div>
       </section>
 
-      <section class="query-section" id="query">
+      <section class="section faq-section" id="faq" data-reveal>
+        <div class="section-heading">
+          <p class="eyebrow">FAQ</p>
+          <h2>Answers to the most asked questions.</h2>
+          <p>Quick answers on timelines, brokers, risk, pricing, and how TradeMind AI works with your strategy.</p>
+        </div>
+        <div class="faq-list" data-faq>
+          <details class="faq-item">
+            <summary>How long does it take to build a trading algo?</summary>
+            <div><p>Most algo builds ship in 1–3 weeks depending on complexity, broker integration, and data requirements. Scripts are usually ready in a few days.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Which brokers and platforms are supported?</summary>
+            <div><p>Zerodha Kite, Upstox, Angel One, Fyers, Dhan, IBKR, Alpaca, and TradingView alerts. Other broker APIs can be added on request.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Do you use AI/ML in the strategies?</summary>
+            <div><p>Yes — for signal scoring, pattern classification, and feature engineering. We keep models transparent and always paired with explicit risk rules.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Can you guarantee profits?</summary>
+            <div><p>No. TradeMind AI is a software development service. We build the trading infrastructure; you own the strategy and the risk. Markets are inherently uncertain.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Do I get source code and post-launch support?</summary>
+            <div><p>Yes — you receive full source code, docs, and a maintenance window after launch. Extended support and upgrades can be quoted separately.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How do I get started?</summary>
+            <div><p>Send your strategy on WhatsApp (+91 88061 60767) or email. You'll get a scope, timeline, and price quote within 24 hours.</p></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="query-section" id="query" data-reveal>
         <div class="query-copy">
           <p class="eyebrow">Project Query</p>
           <h2>Send your trading software requirement.</h2>
@@ -275,7 +400,7 @@ strategy.deploy(mode="alerts")</code></pre>
             </label>
             <div class="form-actions">
               <button class="btn primary dark" type="submit">Send Query</button>
-              <a class="btn whatsapp dark" href="https://wa.me/91880616076" target="_blank" rel="noreferrer" data-whatsapp-query>
+              <a class="btn whatsapp dark" href="https://wa.me/918806160767" target="_blank" rel="noreferrer" data-whatsapp-query>
                 Send on WhatsApp
               </a>
             </div>
@@ -293,7 +418,7 @@ strategy.deploy(mode="alerts")</code></pre>
         </div>
       </section>
 
-      <section class="contact-section" id="contact">
+      <section class="contact-section" id="contact" data-reveal>
         <div class="contact-copy">
           <p class="eyebrow">Contact</p>
           <h2>Ready to turn your strategy into software?</h2>
@@ -304,13 +429,13 @@ strategy.deploy(mode="alerts")</code></pre>
         </div>
 
         <div class="contact-card">
-          <a href="tel:880616076">
-            <span>Call</span>
-            <strong>880616076</strong>
+          <a href="tel:+918806160767">
+            <span>Call Dnyaneshwar Jadhav</span>
+            <strong>+91 88061 60767</strong>
           </a>
-          <a href="https://wa.me/91880616076?text=Hi%20TradeMind%20AI%2C%20I%20want%20to%20discuss%20algo%20trading%20software." target="_blank" rel="noreferrer">
+          <a href="https://wa.me/918806160767?text=Hi%20Dnyaneshwar%2C%20I%20want%20to%20discuss%20algo%20trading%20software." target="_blank" rel="noreferrer">
             <span>WhatsApp</span>
-            <strong>Message TradeMind AI</strong>
+            <strong>Message Dnyaneshwar</strong>
           </a>
           <a href="mailto:jadhavdnyaneshwar701@gmail.com">
             <span>Email</span>
@@ -330,9 +455,31 @@ strategy.deploy(mode="alerts")</code></pre>
     </main>
 
     <footer class="site-footer">
-      <span>© <span data-year></span> TradeMind AI. All rights reserved.</span>
+      <span>© <span data-year></span> TradeMind AI — Built by Dnyaneshwar Jadhav. All rights reserved.</span>
       <a href="#home">Back to top</a>
     </footer>
+
+    <a class="float-whatsapp" href="https://wa.me/918806160767?text=Hi%20Dnyaneshwar%2C%20I%20want%20to%20discuss%20a%20trading%20software%20project." target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp">
+      <span>Chat</span>
+    </a>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+    <div class="cmdk-backdrop" data-cmdk hidden>
+      <div class="cmdk-panel glass" role="dialog" aria-modal="true" aria-label="Command palette">
+        <div class="cmdk-input-row">
+          <span class="cmdk-prompt" aria-hidden="true">⌘</span>
+          <input type="text" placeholder="Search services, pricing, FAQ, contact…" data-cmdk-input autocomplete="off" />
+          <kbd>Esc</kbd>
+        </div>
+        <ul class="cmdk-list" data-cmdk-list role="listbox"></ul>
+        <div class="cmdk-footer">
+          <span>↑↓ navigate</span>
+          <span>↵ jump</span>
+          <span>Esc close</span>
+        </div>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>
