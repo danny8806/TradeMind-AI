@@ -481,3 +481,303 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     window.scrollTo({ top, behavior: "smooth" });
   });
 });
+
+/* ---------- Advanced tech features ---------- */
+
+/* Site-wide particle network background */
+(() => {
+  const net = document.querySelector("[data-network]");
+  if (!net) return;
+  const nctx = net.getContext("2d");
+  let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const nodes = [];
+  const NODE_COUNT = Math.min(90, Math.floor((window.innerWidth * window.innerHeight) / 22000));
+  const mouse = { x: -9999, y: -9999 };
+  const setSize = () => {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    net.width = W * DPR;
+    net.height = H * DPR;
+    net.style.width = W + "px";
+    net.style.height = H + "px";
+    nctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  };
+  setSize();
+  window.addEventListener("resize", setSize);
+  for (let i = 0; i < NODE_COUNT; i++) {
+    nodes.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: 1 + Math.random() * 1.6,
+    });
+  }
+  window.addEventListener("pointermove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  }, { passive: true });
+  window.addEventListener("pointerleave", () => { mouse.x = -9999; mouse.y = -9999; });
+  const draw = () => {
+    nctx.clearRect(0, 0, W, H);
+    const dark = document.documentElement.getAttribute("data-theme") === "dark";
+    const dot = dark ? "rgba(98,230,183,0.85)" : "rgba(20,168,115,0.75)";
+    const line = dark ? "rgba(98,230,183," : "rgba(20,168,115,";
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+      const dxm = n.x - mouse.x, dym = n.y - mouse.y;
+      const dm = Math.hypot(dxm, dym);
+      if (dm < 120) {
+        n.vx += (dxm / dm) * 0.04;
+        n.vy += (dym / dm) * 0.04;
+      }
+      n.vx = Math.max(-0.9, Math.min(0.9, n.vx));
+      n.vy = Math.max(-0.9, Math.min(0.9, n.vy));
+    }
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d = Math.hypot(dx, dy);
+        if (d < 140) {
+          nctx.strokeStyle = line + (0.18 * (1 - d / 140)).toFixed(3) + ")";
+          nctx.lineWidth = 1;
+          nctx.beginPath();
+          nctx.moveTo(a.x, a.y);
+          nctx.lineTo(b.x, b.y);
+          nctx.stroke();
+        }
+      }
+    }
+    nctx.fillStyle = dot;
+    for (const n of nodes) {
+      nctx.beginPath();
+      nctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      nctx.fill();
+    }
+    requestAnimationFrame(draw);
+  };
+  draw();
+})();
+
+/* Typewriter */
+(() => {
+  const el = document.querySelector("[data-typewriter]");
+  if (!el) return;
+  let lines = [];
+  try { lines = JSON.parse(el.dataset.typewriterLines || "[]"); } catch { lines = []; }
+  if (!lines.length) return;
+  let li = 0, ci = 0, deleting = false;
+  const tick = () => {
+    const full = lines[li];
+    if (!deleting) {
+      ci++;
+      el.textContent = full.slice(0, ci);
+      if (ci === full.length) { deleting = true; setTimeout(tick, 1500); return; }
+    } else {
+      ci--;
+      el.textContent = full.slice(0, ci);
+      if (ci === 0) { deleting = false; li = (li + 1) % lines.length; }
+    }
+    setTimeout(tick, deleting ? 28 : 42);
+  };
+  tick();
+})();
+
+/* 3D tilt on cards */
+(() => {
+  const tilts = document.querySelectorAll("[data-tilt]");
+  if (!tilts.length) return;
+  const prm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prm) return;
+  tilts.forEach((el) => {
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      const rx = (0.5 - py) * 10;
+      const ry = (px - 0.5) * 12;
+      el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+      el.style.setProperty("--tx", (px * 100).toFixed(1) + "%");
+      el.style.setProperty("--ty", (py * 100).toFixed(1) + "%");
+    });
+    el.addEventListener("pointerleave", () => {
+      el.style.transform = "";
+    });
+  });
+})();
+
+/* Magnetic primary buttons */
+(() => {
+  const prm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prm) return;
+  const btns = document.querySelectorAll(".btn.primary, .btn.whatsapp, .float-whatsapp");
+  btns.forEach((btn) => {
+    btn.addEventListener("pointermove", (e) => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      btn.style.transform = `translate(${dx * 0.18}px, ${dy * 0.22}px)`;
+    });
+    btn.addEventListener("pointerleave", () => {
+      btn.style.transform = "";
+    });
+  });
+})();
+
+/* AI Signal Feed (streaming fake trade signals) */
+(() => {
+  const feed = document.querySelector("[data-signal-feed]");
+  if (!feed) return;
+  const latencyEl = document.querySelector("[data-metric-latency]");
+  const accuracyEl = document.querySelector("[data-metric-accuracy]");
+  const symbols = ["NIFTY", "BANKNIFTY", "RELIANCE", "TCS", "INFY", "HDFCBANK", "ITC", "BTCUSD", "ETHUSD", "SENSEX"];
+  const actions = ["BUY", "SELL", "HOLD"];
+  const strategies = ["EMA X-over", "RSI Divergence", "VWAP Pullback", "Breakout", "Mean Reversion", "Supertrend", "MACD"];
+  const pushSignal = () => {
+    const sym = symbols[Math.floor(Math.random() * symbols.length)];
+    const act = actions[Math.floor(Math.random() * actions.length)];
+    const strat = strategies[Math.floor(Math.random() * strategies.length)];
+    const conf = (65 + Math.random() * 34).toFixed(1);
+    const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    const li = document.createElement("li");
+    li.className = "signal-item signal-" + act.toLowerCase();
+    li.innerHTML = `
+      <span class="sig-time">${now}</span>
+      <span class="sig-action">${act}</span>
+      <span class="sig-sym">${sym}</span>
+      <span class="sig-strat">${strat}</span>
+      <span class="sig-conf">${conf}%</span>
+    `;
+    feed.prepend(li);
+    while (feed.children.length > 5) feed.removeChild(feed.lastChild);
+    if (latencyEl) latencyEl.textContent = (30 + Math.random() * 40).toFixed(0) + " ms";
+    if (accuracyEl) accuracyEl.textContent = (88 + Math.random() * 8).toFixed(1) + "%";
+  };
+  pushSignal(); pushSignal(); pushSignal();
+  setInterval(pushSignal, 2200);
+})();
+
+/* Sparklines under hero stats */
+(() => {
+  const svgs = document.querySelectorAll("[data-sparkline]");
+  if (!svgs.length) return;
+  svgs.forEach((svg) => {
+    const points = 24;
+    const arr = [];
+    let v = 50;
+    for (let i = 0; i < points; i++) {
+      v += (Math.random() - 0.45) * 14;
+      v = Math.max(12, Math.min(88, v));
+      arr.push(v);
+    }
+    const coords = arr.map((y, i) => `${(i / (points - 1)) * 100},${28 - (y / 100) * 24 - 2}`).join(" ");
+    const lastX = 100, lastY = 28 - (arr[arr.length - 1] / 100) * 24 - 2;
+    svg.innerHTML = `
+      <defs>
+        <linearGradient id="sparkFill${Math.random().toString(36).slice(2, 7)}" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="currentColor" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <polyline points="${coords}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" />
+      <circle cx="${lastX}" cy="${lastY}" r="1.8" fill="currentColor" />
+    `;
+  });
+})();
+
+/* FAQ accordion — exclusive open */
+(() => {
+  const items = document.querySelectorAll(".faq-item");
+  items.forEach((el) => {
+    el.addEventListener("toggle", () => {
+      if (el.open) items.forEach((o) => { if (o !== el) o.open = false; });
+    });
+  });
+})();
+
+/* Command Palette (Ctrl+K / Cmd+K) */
+(() => {
+  const backdrop = document.querySelector("[data-cmdk]");
+  const input = document.querySelector("[data-cmdk-input]");
+  const list = document.querySelector("[data-cmdk-list]");
+  const opener = document.querySelector("[data-cmdk-open]");
+  if (!backdrop || !input || !list) return;
+  const cmds = [
+    { label: "Go to Services", hint: "section", href: "#services" },
+    { label: "Go to Process", hint: "section", href: "#process" },
+    { label: "Go to Pricing", hint: "section", href: "#pricing" },
+    { label: "Go to FAQ", hint: "section", href: "#faq" },
+    { label: "Go to Query Form", hint: "section", href: "#query" },
+    { label: "Go to Contact", hint: "section", href: "#contact" },
+    { label: "Call Dnyaneshwar (+91 88061 60767)", hint: "action", href: "tel:+918806160767" },
+    { label: "Message on WhatsApp", hint: "action", href: "https://wa.me/918806160767" },
+    { label: "Send Email", hint: "action", href: "mailto:jadhavdnyaneshwar701@gmail.com" },
+    { label: "Toggle Dark / Light Theme", hint: "action", action: "theme" },
+    { label: "Export saved queries (CSV)", hint: "action", action: "export" },
+  ];
+  let idx = 0;
+  const render = (q = "") => {
+    const filtered = cmds.filter((c) => c.label.toLowerCase().includes(q.toLowerCase()));
+    list.innerHTML = filtered
+      .map((c, i) => `<li class="${i === idx ? "is-active" : ""}" data-i="${i}" role="option" aria-selected="${i === idx}">
+        <span class="cmdk-label">${c.label}</span>
+        <span class="cmdk-hint">${c.hint}</span>
+      </li>`)
+      .join("");
+    list.dataset.results = JSON.stringify(filtered.map((c) => ({ href: c.href || "", action: c.action || "" })));
+  };
+  const open = () => {
+    backdrop.hidden = false;
+    document.documentElement.classList.add("cmdk-open");
+    idx = 0;
+    input.value = "";
+    render();
+    setTimeout(() => input.focus(), 10);
+  };
+  const close = () => {
+    backdrop.hidden = true;
+    document.documentElement.classList.remove("cmdk-open");
+  };
+  const run = (i) => {
+    const results = JSON.parse(list.dataset.results || "[]");
+    const target = results[i];
+    if (!target) return;
+    close();
+    if (target.action === "theme") {
+      const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(next);
+      localStorage.setItem(THEME_KEY, next);
+    } else if (target.action === "export") {
+      exportQueries.click();
+    } else if (target.href) {
+      if (target.href.startsWith("#")) {
+        document.querySelector(target.href)?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.location.href = target.href;
+      }
+    }
+  };
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      backdrop.hidden ? open() : close();
+    } else if (!backdrop.hidden) {
+      if (e.key === "Escape") { e.preventDefault(); close(); }
+      else if (e.key === "ArrowDown") { e.preventDefault(); idx++; render(input.value); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); idx = Math.max(0, idx - 1); render(input.value); }
+      else if (e.key === "Enter") { e.preventDefault(); run(idx); }
+    }
+  });
+  input.addEventListener("input", () => { idx = 0; render(input.value); });
+  list.addEventListener("click", (e) => {
+    const li = e.target.closest("li");
+    if (!li) return;
+    run(Number(li.dataset.i));
+  });
+  backdrop.addEventListener("click", (e) => { if (e.target === backdrop) close(); });
+  opener?.addEventListener("click", open);
+})();
