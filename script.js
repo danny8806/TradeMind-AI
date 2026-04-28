@@ -310,7 +310,7 @@ if (tickerTrack) {
         const pct = ((drift / s.base) * 100).toFixed(2);
         const up = drift >= 0;
         const price = (s.base + drift).toLocaleString("en-IN", { maximumFractionDigits: 2 });
-        return `<span><b>${s.name}</b> ${price} <span class="${up ? "up" : "down"}">${up ? "▲" : "▼"} ${Math.abs(pct)}%</span></span>`;
+        return `<span><b>${s.name}</b> ${price} <span class="${up ? "up" : "down"}">${up ? "▲" : "▼"} ${Math.abs(parseFloat(pct)).toFixed(2)}%</span></span>`;
       })
       .join("");
     // duplicate for seamless loop
@@ -755,7 +755,12 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       exportQueries.click();
     } else if (target.href) {
       if (target.href.startsWith("#")) {
-        document.querySelector(target.href)?.scrollIntoView({ behavior: "smooth" });
+        const el = document.querySelector(target.href);
+        if (el) {
+          const offset = (document.querySelector(".ticker")?.offsetHeight || 0) + 64;
+          const top = el.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: "smooth" });
+        }
       } else {
         window.location.href = target.href;
       }
@@ -767,7 +772,12 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       backdrop.hidden ? open() : close();
     } else if (!backdrop.hidden) {
       if (e.key === "Escape") { e.preventDefault(); close(); }
-      else if (e.key === "ArrowDown") { e.preventDefault(); idx++; render(input.value); }
+      else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        const len = JSON.parse(list.dataset.results || "[]").length;
+        idx = Math.min(Math.max(0, len - 1), idx + 1);
+        render(input.value);
+      }
       else if (e.key === "ArrowUp") { e.preventDefault(); idx = Math.max(0, idx - 1); render(input.value); }
       else if (e.key === "Enter") { e.preventDefault(); run(idx); }
     }
@@ -780,4 +790,214 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
   backdrop.addEventListener("click", (e) => { if (e.target === backdrop) close(); });
   opener?.addEventListener("click", open);
+})();
+
+/* ---------- Auth (Sign in / Register) ---------- */
+(() => {
+  const backdrop = document.querySelector("[data-auth]");
+  const form = document.querySelector("[data-auth-form]");
+  const titleEl = document.querySelector("[data-auth-title]");
+  const subEl = document.querySelector("[data-auth-sub]");
+  const submitBtn = document.querySelector("[data-auth-submit]");
+  const switchText = document.querySelector("[data-auth-switch-text]");
+  const switchBtn = document.querySelector("[data-auth-switch]");
+  const closeBtn = document.querySelector("[data-auth-close]");
+  const errorEl = document.querySelector("[data-auth-error]");
+  const tabs = document.querySelectorAll(".auth-tab");
+  const nameRow = document.querySelector("[data-auth-name-row]");
+  const emailRow = document.querySelector("[data-auth-email-row]");
+  const phoneRow = document.querySelector("[data-auth-phone-row]");
+  const nameInput = document.getElementById("auth-name");
+  const emailField = document.getElementById("auth-email");
+  const phoneField = document.getElementById("auth-phone");
+  const passwordField = document.getElementById("auth-password");
+  const openers = document.querySelectorAll("[data-auth-open]");
+  const userChip = document.querySelector("[data-user-chip]");
+  const userMenu = document.querySelector("[data-user-menu]");
+  const userAvatar = document.querySelector("[data-user-avatar]");
+  const userLabel = document.querySelector("[data-user-label]");
+  const userName = document.querySelector("[data-user-name]");
+  const userIdEl = document.querySelector("[data-user-id]");
+  const signoutBtn = document.querySelector("[data-user-signout]");
+  const loginBtn = document.querySelector('.auth-btn.ghost[data-auth-open="login"]');
+  const registerBtn = document.querySelector('.auth-btn.primary[data-auth-open="register"]');
+
+  if (!backdrop || !form) return;
+
+  const SESSION_KEY = "trademind-auth-session";
+  let mode = "login"; // "login" | "register"
+  let channel = "email"; // "email" | "phone"
+
+  const setMode = (m) => {
+    mode = m;
+    if (m === "register") {
+      titleEl.textContent = "Create your TradeMind account";
+      subEl.textContent = "Save your queries, signals, and algo build requests across devices.";
+      submitBtn.textContent = "Create account";
+      switchText.textContent = "Already have an account?";
+      switchBtn.textContent = "Sign in";
+      nameRow.hidden = false;
+    } else {
+      titleEl.textContent = "Sign in to TradeMind AI";
+      subEl.textContent = "Access your algo build requests, saved queries, and AI signals.";
+      submitBtn.textContent = "Sign in";
+      switchText.textContent = "New to TradeMind AI?";
+      switchBtn.textContent = "Create an account";
+      nameRow.hidden = true;
+    }
+  };
+
+  const setChannel = (c) => {
+    channel = c;
+    tabs.forEach((t) => {
+      const active = t.dataset.authTab === c;
+      t.classList.toggle("is-active", active);
+      t.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    emailRow.hidden = c !== "email";
+    phoneRow.hidden = c !== "phone";
+  };
+
+  const showError = (msg) => {
+    errorEl.textContent = msg;
+    errorEl.hidden = false;
+  };
+  const clearError = () => {
+    errorEl.textContent = "";
+    errorEl.hidden = true;
+  };
+
+  const open = (m = "login") => {
+    setMode(m);
+    setChannel("email");
+    clearError();
+    form.reset();
+    backdrop.hidden = false;
+    document.documentElement.classList.add("cmdk-open");
+    setTimeout(() => emailField?.focus(), 30);
+  };
+
+  const close = () => {
+    backdrop.hidden = true;
+    document.documentElement.classList.remove("cmdk-open");
+  };
+
+  const initialsOf = (label) => {
+    const s = String(label || "").trim();
+    if (!s) return "TM";
+    const parts = s.split(/[\s@.+_-]+/).filter(Boolean);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  };
+
+  const setSignedIn = (session) => {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    if (loginBtn) loginBtn.hidden = true;
+    if (registerBtn) registerBtn.hidden = true;
+    if (userChip) {
+      userChip.hidden = false;
+      userChip.setAttribute("aria-expanded", "false");
+    }
+    if (userAvatar) userAvatar.textContent = initialsOf(session.name || session.id);
+    if (userLabel) userLabel.textContent = session.name ? session.name.split(" ")[0] : "Account";
+    if (userName) userName.textContent = session.name || "Signed in";
+    if (userIdEl) userIdEl.textContent = session.id || "";
+  };
+
+  const setSignedOut = () => {
+    localStorage.removeItem(SESSION_KEY);
+    if (loginBtn) loginBtn.hidden = false;
+    if (registerBtn) registerBtn.hidden = false;
+    if (userChip) userChip.hidden = true;
+    if (userMenu) userMenu.hidden = true;
+  };
+
+  const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim());
+  const validPhone = (v) => String(v).replace(/\D/g, "").length >= 10;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    clearError();
+    const password = (passwordField.value || "").trim();
+    if (password.length < 6) {
+      showError("Password must be at least 6 characters.");
+      return;
+    }
+    let id = "";
+    if (channel === "email") {
+      const v = (emailField.value || "").trim();
+      if (!validEmail(v)) { showError("Enter a valid email address."); return; }
+      id = v;
+    } else {
+      const v = (phoneField.value || "").trim();
+      if (!validPhone(v)) { showError("Enter a valid phone number with country code."); return; }
+      id = v;
+    }
+    if (mode === "register") {
+      const n = (nameInput.value || "").trim();
+      if (!n) { showError("Please enter your name."); return; }
+      setSignedIn({ provider: channel, id, name: n, ts: Date.now() });
+      if (typeof showToast === "function") showToast("Account created. Welcome, " + n.split(" ")[0] + "!");
+    } else {
+      setSignedIn({ provider: channel, id, name: id.split("@")[0] || id, ts: Date.now() });
+      if (typeof showToast === "function") showToast("Signed in as " + id);
+    }
+    close();
+  });
+
+  document.querySelectorAll("[data-auth-social]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const provider = btn.dataset.authSocial;
+      // Demo: simulate OAuth redirect locally (no backend)
+      const fakeId = (provider === "google" ? "demo.user@gmail.com" : "demo-user@github");
+      const display = provider === "google" ? "Google User" : "GitHub User";
+      setSignedIn({ provider, id: fakeId, name: display, ts: Date.now() });
+      if (typeof showToast === "function") showToast("Signed in with " + provider[0].toUpperCase() + provider.slice(1) + " (demo)");
+      close();
+    });
+  });
+
+  tabs.forEach((t) => t.addEventListener("click", () => setChannel(t.dataset.authTab)));
+
+  switchBtn?.addEventListener("click", () => setMode(mode === "login" ? "register" : "login"));
+
+  openers.forEach((b) => {
+    b.addEventListener("click", () => open(b.dataset.authOpen || "login"));
+  });
+
+  closeBtn?.addEventListener("click", close);
+  backdrop.addEventListener("click", (e) => { if (e.target === backdrop) close(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !backdrop.hidden) { close(); }
+  });
+
+  // User chip menu
+  userChip?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!userMenu) return;
+    userMenu.hidden = !userMenu.hidden;
+    userChip.setAttribute("aria-expanded", userMenu.hidden ? "false" : "true");
+  });
+  document.addEventListener("click", (e) => {
+    if (userMenu && !userMenu.hidden && !userMenu.contains(e.target) && e.target !== userChip) {
+      userMenu.hidden = true;
+      userChip?.setAttribute("aria-expanded", "false");
+    }
+  });
+  signoutBtn?.addEventListener("click", () => {
+    setSignedOut();
+    if (typeof showToast === "function") showToast("Signed out");
+  });
+
+  // Restore session
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (raw) {
+      const session = JSON.parse(raw);
+      if (session && session.id) setSignedIn(session);
+    }
+  } catch {}
+
+  // Expose minimal API for command palette / debugging
+  window.TradeMindAuth = { open, close, signOut: setSignedOut };
 })();
